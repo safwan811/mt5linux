@@ -6,7 +6,7 @@ rm -rf /tmp/.X100-lock
 
 # set up display
 export DISPLAY=:100
-Xvfb :100 -ac -screen 0 1024x768x24 &
+Xvfb :100 -ac -screen 0 1920x1080x24 &
 x11vnc -storepasswd $VNC_PASSWORD /mt5linux/passwd
 x11vnc -display :100 -forever -rfbport 5901 -rfbauth /mt5linux/passwd &
 chmod 600 /mt5linux/passwd
