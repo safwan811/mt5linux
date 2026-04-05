@@ -1,13 +1,17 @@
 services:
-  mt5linux:
-    image: lprett/mt5linux:latest
-    container_name: mt5linux
-    environment:
-      MT5_HOST: ${MT5_HOST:-0.0.0.0}
-      VNC_PASSWORD: ${VNC_PASSWORD:-password}
+  mt5:
+    build: .
     ports:
-      - ${NVC_PORT:-6081}:6081
-      - ${MT5_PORT:-18812}:18812
-    restart: "no"
-    stdin_open: true
-    tty: true
+      - "${NOVNC_PORT:-6081}:6081"
+      - "${VNC_PORT:-5901}:5901"
+      - "${MT5_PORT:-18812}:18812"
+    environment:
+      - VNC_PASSWORD=${VNC_PASSWORD:-changeme}
+      - MT5_HOST=${MT5_HOST:-0.0.0.0}
+    volumes:
+      - ./start.sh:/mt5linux/start.sh
+      - ./python:/mt5linux/python
+      - ./experts:/opt/wineprefix/drive_c/Program Files/MetaTrader 5/MQL5/Experts
+      - ./scripts:/opt/wineprefix/drive_c/Program Files/MetaTrader 5/MQL5/Scripts
+      - ./indicators:/opt/wineprefix/drive_c/Program Files/MetaTrader 5/MQL5/Indicators
+    restart: always
