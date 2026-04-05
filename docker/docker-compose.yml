@@ -1,5 +1,6 @@
 services:
   mt5:
+    container_name: mt5linux
     build: .
     ports:
       - "${NOVNC_PORT:-6081}:6081"
