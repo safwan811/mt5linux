@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     x11vnc \
     xvfb \
     fluxbox \
+    xterm \
     supervisor \
     cabextract \
     git \
