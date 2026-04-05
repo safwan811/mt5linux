@@ -1,5 +1,4 @@
 FROM tobix/pywine:3.12
-
 # Update and install required packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     x11vnc \
@@ -15,21 +14,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Point python3 and python to wine python
+RUN printf '#!/bin/bash\nwine python "$@"' > /usr/local/bin/python3 && \
+    chmod +x /usr/local/bin/python3 && \
+    ln -sf /usr/local/bin/python3 /usr/local/bin/python
 
 WORKDIR /mt5linux
 COPY requirements.txt ./
-
 RUN wine pip install -r requirements.txt
-
 RUN curl -L -o winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && \
     chmod +x winetricks && \
     mv winetricks /usr/bin/ && \
     xvfb-run sh -c "winetricks --unattended vcrun2019"
-
 RUN curl -L -o noVNC.zip https://github.com/novnc/noVNC/archive/refs/heads/master.zip && unzip noVNC.zip && rm noVNC.zip
-
 COPY start.sh mt5cfg.ini test_connection.py ./
-
 RUN chmod +x ./start.sh
-
 ENTRYPOINT ["./start.sh"]
