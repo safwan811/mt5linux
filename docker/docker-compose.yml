@@ -1,8 +1,8 @@
 services:
   mt5:
+    build: .
     container_name: mt5
     image: mt5linux:latest
-    build: .
     ports:
       - "${NOVNC_PORT:-6081}:6081"
       - "${VNC_PORT:-5901}:5901"
